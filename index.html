@@ -9,14 +9,16 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
+            overflow-x: auto; /* Ensures horizontal scrollbar appears when needed */
         }
         .container {
-            width: 1200px;
-            max-width: 1200px;
-            margin: 0 auto;
+            width: 5000px; /* Huge fixed width as requested */
+            max-width: 5000px; /* Matches width for consistency */
+            margin: 0; /* No auto margin to allow full width extension */
             padding: 20px;
             background-color: #ffffff;
             border: 0px solid #ddd;
+            /* Your content stays left-aligned; empty space scrolls in from right */
         }
     </style>
   </head>
@@ -27,6 +29,7 @@
           <li>I'm currently working on LLMs. Most of the work is private for now; I'll gradually share the clean parts here.</li>
           <li>Check out <a href="https://github.com/frdfm/frdfm_ml_public">frdfm_ml_public</a> for a simple RAG and a simple transformer example.</li>
       </ul>
+      <!-- Empty space: Add more content here if needed, or leave blank for scrolling to white void -->
     </div>
   </body>
 </html>
