@@ -1,35 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fereydoun Farrahi Moghaddam</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            overflow-x: auto; /* Ensures horizontal scrollbar appears when needed */
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fereydoun Farrahi Moghaddam</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      margin: 0;
+      padding: 20px;
+      background-color: #ffffff;
+      box-sizing: border-box;
+    }
+
+    #ai-timeline {
+      width: 100%;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Fereydoun Farrahi Moghaddam (frdfm)</h1>
+    <h2>Updates</h2>
+    <ul>
+      <li>I'm currently working on LLMs. Most of the work is private for now; I'll gradually share the clean parts here.
+      </li>
+      <li>Check out <a href="https://github.com/frdfm/frdfm_ml_public">frdfm_ml_public</a> for a simple RAG and a simple
+        transformer example.</li>
+    </ul>
+
+    <h2>AI Timeline</h2>
+    <div id="timeline-container"></div>
+
+    <script>
+      // Data derived from extensive research (1950-2025+)
+      const events = [
+        // Foundations & Early Optimism (1950-1970)
+        { title: "Turing Test", subtitle: "Alan Turing, 1950", description: "Proposed method to evaluate machine intelligence.", year: 1950 },
+        { title: "SNARC", subtitle: "Minsky, 1952", description: "Stochastic Neural Analog Reinforcement Calculator - early neural net.", year: 1952 },
+        { title: "Dartmouth Conference", subtitle: "1956", description: "Birth of AI as a field (McCarthy, Minsky, Simon, Newell).", year: 1956 },
+        { title: "Perceptron", subtitle: "Rosenblatt, 1958", description: "Early artificial neural network capable of learning.", year: 1958 },
+        { title: "LISP", subtitle: "McCarthy, 1958", description: "First programming language for AI research.", year: 1958 },
+        { title: "Machine Learning Coined", subtitle: "Arthur Samuel, 1959", description: "Defined as computers learning without explicit programming.", year: 1959 },
+        { title: "ELIZA", subtitle: "Weizenbaum, 1966", description: "First chatbot simulating conversation.", year: 1966 },
+        { title: "ALPAC Report", subtitle: "1966", description: "Skeptical report on machine translation leading to funding cuts.", year: 1966 },
+        { title: "Perceptrons Book", subtitle: "Minsky & Papert, 1969", description: "Proved limitations of simple NNs, triggering first funding freeze.", year: 1969 },
+        { title: "Shakey the Robot", subtitle: "SRI, 1969", description: "First mobile robot capable of reasoning about its surroundings.", year: 1969 },
+
+        // The AI Winters (1970-2000)
+        { title: "Lighthill Report", subtitle: "UK, 1973", description: "Highly critical report leading to the 'AI Winter' in Europe.", year: 1973 },
+        { title: "First AI Winter", subtitle: "1974–1980", description: "Funding dries up globally due to unmet expectations.", year: 1974 },
+        { title: "Expert Systems Boom", subtitle: "1980s", description: "Rule-based systems (XCON) bring brief commercial success.", year: 1980 },
+        { title: "Fifth Gen Computer", subtitle: "Japan, 1982", description: "Ambitious but failed gov initiative to create 'thinking' machines.", year: 1982 },
+        { title: "Backprop Popularized", subtitle: "Hinton et al., 1986", description: "Efficient training method revives interest in neural networks.", year: 1986 },
+        { title: "Lisp Machine Collapse", subtitle: "1987", description: "Market crash for specialized AI hardware; second AI winter begins.", year: 1987 },
+        { title: "Deep Blue", subtitle: "IBM, 1997", description: "Brute force AI defeats chess champion Garry Kasparov.", year: 1997 },
+
+        // The Deep Learning Era (2000-2020)
+        { title: "Deep Learning Renaissance", subtitle: "Hinton, 2006", description: "Deep Belief Nets restart neural network research.", year: 2006 },
+        { title: "AlexNet", subtitle: "ImageNet, 2012", description: "Deep CNNs crush benchmarks; the Deep Learning explosion begins.", year: 2012 },
+        { title: "GANs", subtitle: "Goodfellow, 2014", description: "Generative Adversarial Networks introduced.", year: 2014 },
+        { title: "AlphaGo", subtitle: "DeepMind, 2016", description: "RL mastery over Go; 'Move 37' shocks the world.", year: 2016 },
+        { title: "Transformer Paper", subtitle: "Google, 2017", description: "'Attention Is All You Need' revolutionizes NLP.", year: 2017 },
+        { title: "BERT & GPT-1", subtitle: "2018", description: "Pre-trained language models become the standard.", year: 2018 },
+
+        // The Generative & Agentic Age (2020-2025+)
+        { title: "GPT-3", subtitle: "OpenAI, 2020", description: "175B parameter model demonstrates few-shot learning.", year: 2020 },
+        { title: "DDPM Paper", subtitle: "Ho et al., 2020", description: "Foundational paper for modern Diffusion models.", year: 2020 },
+        { title: "DALL-E 1", subtitle: "OpenAI, 2021", description: "First high-quality text-to-image model.", year: 2021 },
+        { title: "ChatGPT", subtitle: "OpenAI, 2022", description: "RLHF-tuned chat interface reaches mass adoption.", year: 2022 },
+        { title: "Stable Diffusion", subtitle: "Stability AI, 2022", description: "Open source generative art explosion.", year: 2022 },
+        { title: "Llama 1 & 2", subtitle: "Meta, 2023", description: "Open weights catalyst for open-source AI ecosystem.", year: 2023 },
+        { title: "Gemini 1.0", subtitle: "Google, 2023", description: "Native multimodal architecture.", year: 2023 },
+        { title: "Sora", subtitle: "OpenAI, 2024", description: "Physics-simulating video generation model.", year: 2024 },
+        { title: "Gemini 1.5 Pro", subtitle: "Google, 2024", description: "1 Million+ token context window.", year: 2024 },
+        { title: "Claude 3.5 Sonnet", subtitle: "Anthropic, 2024", description: "State-of-the-art coding and 'Computer Use' capability.", year: 2024 },
+        { title: "DeepSeek", subtitle: "DeepSeek, 2024", description: "Efficient Mixture-of-Experts (MoE) rivals top closed models.", year: 2024 },
+        { title: "Vibe Coding", subtitle: "Karpathy, 2025", description: "LLM-native development paradigm shift.", year: 2025 },
+        { title: "Agentic AI", subtitle: "2025", description: "Mass adoption of autonomous, goal-seeking agents.", year: 2025 },
+        { title: "Gemini 3", subtitle: "Google, 2025", description: "Next-generation reasoning capabilities (Late 2025).", year: 2025 },
+      ];
+
+      function getColor(year) {
+        if (year < 1970) return '#2E86AB'; // Early AI - Blue
+        if (year < 1980) return '#A23B72'; // AI Winter - Purple
+        if (year < 2000) return '#F18F01'; // Expert Systems - Orange
+        if (year < 2015) return '#C73E1D'; // Deep Learning - Red
+        return '#6B2D91';                  // Modern AI - Purple
+      }
+
+      const container = document.getElementById('timeline-container');
+
+      // Configuration
+      const startYear = 1945;
+      const endYear = 2055;
+      const totalYears = endYear - startYear;
+      const itemHeight = 40; // Spacing between events vertically
+      const height = (events.length + 2) * itemHeight; // Total height + padding
+
+      // Setup SVG
+      // Note: Width is managed by CSS (100% of container), but we need a coordinate system that matches the visual expectation.
+      // We will use viewbox for responsive scaling if needed, or simply map pixels.
+      // Given the original had fixed aspect ratio, let's try to fit within the container width.
+      // The container is very wide (5000px), so we can map 1 year = X pixels.
+
+      // Let's create the SVG elem
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("width", "100%");
+      svg.setAttribute("height", height);
+      // We don't necessarily need a viewBox if we are drawing directly to the wide canvas, 
+      // but it helps to standardize units. Let's assume the container width is the drawing space.
+      // However, checking the CSS, --main-width is 5000px.
+      // So we can map years linearly across that width.
+
+      const width = 5000; // Matching CSS var(--main-width) roughly, or just read clientWidth
+      // Actually, best to act dynamic.
+
+      // Render function to allow potential resizing (though current CSS is fixed width)
+      function render() {
+        // Clear existing
+        while (svg.firstChild) {
+          svg.removeChild(svg.firstChild);
         }
-        .container {
-            width: 5000px; /* Huge fixed width as requested */
-            max-width: 5000px; /* Matches width for consistency */
-            margin: 0; /* No auto margin to allow full width extension */
-            padding: 20px;
-            background-color: #ffffff;
-            border: 0px solid #ddd;
-            /* Your content stays left-aligned; empty space scrolls in from right */
+
+        const w = container.getBoundingClientRect().width || 5000;
+        const yearWidth = w / 85; // approx 1945 to 2030 spacing
+
+        // Draw Decades
+        for (let y = 1950; y <= 2050; y += 10) {
+          const x = (y - startYear) / (endYear - startYear) * w;
+
+          // Line
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", x);
+          line.setAttribute("y1", 0);
+          line.setAttribute("x2", x);
+          line.setAttribute("y2", height);
+          line.setAttribute("stroke", "lightgray");
+          line.setAttribute("stroke-width", "0.5");
+          line.setAttribute("stroke-opacity", "0.3");
+          svg.appendChild(line);
+
+          // Year Label
+          const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          text.setAttribute("x", x);
+          text.setAttribute("y", height - 5);
+          text.setAttribute("text-anchor", "middle");
+          text.setAttribute("font-size", "12");
+          text.setAttribute("fill", "#666");
+          text.textContent = y;
+          svg.appendChild(text);
         }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Fereydoun Farrahi Moghaddam (frdfm)</h1>
-      <ul>
-          <li>I'm currently working on LLMs. Most of the work is private for now; I'll gradually share the clean parts here.</li>
-          <li>Check out <a href="https://github.com/frdfm/frdfm_ml_public">frdfm_ml_public</a> for a simple RAG and a simple transformer example.</li>
-      </ul>
-      <!-- Empty space: Add more content here if needed, or leave blank for scrolling to white void -->
-    </div>
-  </body>
+
+        // Draw Events
+        events.forEach((event, index) => {
+          // Reverse index for y position to match original "stack up" look or standard list down?
+          // Original: y_pos = (len(events) - i - 1) * 1.2
+          // This means the FIRST item in the list (Turing) was at the TOP (highest Y value in Matplotlib is typically UP, but wait...)
+          // In Matplotlib default: (0,0) is bottom-left. 
+          // So index 0 (Turing) -> y ~ 19 * 1.2 = High Value = Top of chart?
+          // Actually usually we want chronological top to bottom or bottom to top?
+          // Let's check the png... Usually timelines read left-to-right, but the vertical stacking handles the text overlap.
+          // If the list is chronological (1950 -> 2023), placing 1950 at the "top" visually makes sense if we read down,
+          // OR placing them along the line.
+          // The python code: `y_pos = (len(events) - i - 1) * 1.2`
+          // i=0 (1950) -> y=22. i=last (2023) -> y=0.
+          // So 1950 is at the TOP, 2023 is at the BOTTOM.
+
+          const y = (index + 1) * itemHeight; // Simple top-down spacing
+          const x = (event.year - startYear) / (endYear - startYear) * w;
+          const color = getColor(event.year);
+
+          // Connecting Line (from left 0 to the point? Or from axis?)
+          // Python: ax.axhline(y=y_pos, xmin=0.02, xmax=(year-1945)/80...)
+          // It drew a line from the left edge to the dot.
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", 20); // Small padding from left
+          line.setAttribute("y1", y);
+          line.setAttribute("x2", x);
+          line.setAttribute("y2", y);
+          line.setAttribute("stroke", "lightgray");
+          line.setAttribute("stroke-width", "1");
+          line.setAttribute("stroke-opacity", "0.5");
+          svg.appendChild(line);
+
+          // Dot
+          const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          circle.setAttribute("cx", x);
+          circle.setAttribute("cy", y);
+          circle.setAttribute("r", 6);
+          circle.setAttribute("fill", color);
+          circle.setAttribute("stroke", "black");
+          circle.setAttribute("stroke-width", "1");
+          svg.appendChild(circle);
+
+          // Text
+          // Python: text at year + 0.5
+          const textX = x + 15; // padding
+          const textTitle = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          textTitle.setAttribute("x", textX);
+          textTitle.setAttribute("y", y - 5);
+          textTitle.setAttribute("font-size", "14");
+          textTitle.setAttribute("font-weight", "bold");
+          textTitle.setAttribute("fill", "#000");
+          textTitle.textContent = event.title; // + " " + event.subtitle
+
+          const titleSpan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+          titleSpan.textContent = ` (${event.subtitle})`;
+          titleSpan.setAttribute("font-weight", "normal");
+          titleSpan.setAttribute("font-size", "12");
+          textTitle.appendChild(titleSpan);
+
+          svg.appendChild(textTitle);
+
+          const textDesc = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          textDesc.setAttribute("x", textX);
+          textDesc.setAttribute("y", y + 12);
+          textDesc.setAttribute("font-size", "11");
+          textDesc.setAttribute("style", "italic");
+          textDesc.setAttribute("fill", "#555");
+          textDesc.textContent = event.description;
+          svg.appendChild(textDesc);
+        });
+      }
+
+      container.appendChild(svg);
+      render(); // Run once
+
+      // Handle window resize
+      window.addEventListener('resize', () => {
+        render();
+      });
+    </script>
+  </div>
+</body>
+
 </html>
