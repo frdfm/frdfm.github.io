@@ -42,6 +42,9 @@
     <h2>AI Timeline</h2>
     <div id="timeline-container"></div>
 
+    <h2>Robotics Timeline</h2>
+    <div id="robotics-timeline-container"></div>
+
     <script>
       // Data derived from extensive research (1950-2025+)
       const events = [
@@ -91,6 +94,40 @@
         { title: "Gemini 3", subtitle: "Google, 2025", description: "Next-generation reasoning capabilities (Late 2025).", year: 2025 },
       ];
 
+      // Robotics Data derived from extensive research
+      const roboticsEvents = [
+        { title: "Unimate", subtitle: "General Motors, 1961", description: "First industrial robot, installed for die-casting.", year: 1961 },
+        { title: "Shakey", subtitle: "SRI, 1966", description: "First general-purpose mobile robot using AI planning.", year: 1966 },
+        { title: "PUMA Arm", subtitle: "Unimation, 1978", description: "Programmable Universal Machine for Assembly.", year: 1978 },
+        { title: "Canadarm 1", subtitle: "Spar Aerospace, 1981", description: "Robotic arm deployed on the Space Shuttle Columbia.", year: 1981 },
+        { title: "Genghis", subtitle: "Rodney Brooks, 1989", description: "Hexapod robot demonstrating behavior-based robotics.", year: 1989 },
+        { title: "Sojourner", subtitle: "NASA, 1997", description: "First rover to operate on Mars (Pathfinder mission).", year: 1997 },
+        { title: "Global Hawk", subtitle: "Northrop Grumman, 1998", description: "First autonomous drone to fly non-stop across the Pacific.", year: 1998 },
+        { title: "AIBO", subtitle: "Sony, 1999", description: "Iconic consumer robotic dog.", year: 1999 },
+        { title: "da Vinci System", subtitle: "Intuitive Surgical, 2000", description: "FDA approved robotic system for minimally invasive surgery.", year: 2000 },
+        { title: "ASIMO", subtitle: "Honda, 2000", description: "Advanced bipedal humanoid mobility demonstration.", year: 2000 },
+        { title: "Canadarm 2", subtitle: "CSA/NASA, 2001", description: "Next-gen robotic arm dealing with heavier loads on ISS.", year: 2001 },
+        { title: "Roomba", subtitle: "iRobot, 2002", description: "Autonomous vacuum cleaner bringing robotics to mass consumer market.", year: 2002 },
+        { title: "Spirit & Opportunity", subtitle: "NASA, 2004", description: "Twin rovers exploring Mars geology.", year: 2004 },
+        { title: "BigDog", subtitle: "Boston Dynamics, 2005", description: "Quadruped robot capable of rough terrain locomotion.", year: 2005 },
+        { title: "Kiva Systems", subtitle: "Amazon, 2012", description: "Acquisition sparking the modern era of warehouse robotics.", year: 2012 },
+        { title: "Curiosity", subtitle: "NASA, 2012", description: "Car-sized rover investigating Mars habitability.", year: 2012 },
+        { title: "DJI Phantom 1", subtitle: "DJI, 2013", description: "Consumer drone that popularized aerial photography.", year: 2013 },
+        { title: "Atlas", subtitle: "Boston Dynamics, 2013", description: "Agile hydraulic humanoid robot (DARPA funded).", year: 2013 },
+        { title: "Prime Air", subtitle: "Amazon, 2016", description: "First commercial drone delivery in Cambridge, UK.", year: 2016 },
+        { title: "Zipline", subtitle: "Rwanda, 2016", description: "National-scale medical drone delivery network launch.", year: 2016 },
+        { title: "Spot", subtitle: "Boston Dynamics, 2016", description: "Versatile commercial quadruped robot.", year: 2016 },
+        { title: "Sophia", subtitle: "Hanson Robotics, 2016", description: "Social humanoid capable of displaying expressions.", year: 2016 },
+        { title: "Perseverance", subtitle: "NASA, 2021", description: "Mars rover accompanied by Ingenuity helicopter.", year: 2021 },
+        { title: "Optimus", subtitle: "Tesla, 2021", description: "Announcement of Tesla's general purpose humanoid.", year: 2021 },
+        { title: "Figure 01", subtitle: "Figure AI, 2022", description: "Commercial humanoid for warehousing.", year: 2022 },
+        { title: "Mobile ALOHA", subtitle: "Stanford, 2024", description: "Viral demo of low-cost robot cooking and cleaning.", year: 2024 },
+        { title: "1X Neo", subtitle: "1X, 2024", description: "Humanoid designed specifically for home chores.", year: 2024 },
+        { title: "Atlas (Electric)", subtitle: "Boston Dynamics, 2024", description: "Next-gen fully electric humanoid.", year: 2024 },
+        { title: "Optimus Gen 2", subtitle: "Tesla, 2025", description: "Improved tactility, speed, and walking gait.", year: 2025 },
+        { title: "BotQ Factory", subtitle: "Figure AI, 2025", description: "Targeting mass production of humanoids.", year: 2025 },
+      ];
+
       function getColor(year) {
         if (year < 1970) return '#2E86AB'; // Early AI - Blue
         if (year < 1980) return '#A23B72'; // AI Winter - Purple
@@ -99,42 +136,28 @@
         return '#6B2D91';                  // Modern AI - Purple
       }
 
-      const container = document.getElementById('timeline-container');
+      function getRoboticsColor(year) {
+        if (year < 1970) return '#2E86AB';
+        if (year < 2000) return '#A23B72';
+        if (year < 2015) return '#F18F01';
+        return '#C73E1D';
+      }
 
       // Configuration
       const startYear = 1945;
       const endYear = 2055;
-      const totalYears = endYear - startYear;
       const itemHeight = 40; // Spacing between events vertically
-      const height = (events.length + 2) * itemHeight; // Total height + padding
 
-      // Setup SVG
-      // Note: Width is managed by CSS (100% of container), but we need a coordinate system that matches the visual expectation.
-      // We will use viewbox for responsive scaling if needed, or simply map pixels.
-      // Given the original had fixed aspect ratio, let's try to fit within the container width.
-      // The container is very wide (5000px), so we can map 1 year = X pixels.
+      function renderTimeline(data, containerId, colorFunc) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = ''; // Clear previous
 
-      // Let's create the SVG elem
-      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute("width", "100%");
-      svg.setAttribute("height", height);
-      // We don't necessarily need a viewBox if we are drawing directly to the wide canvas, 
-      // but it helps to standardize units. Let's assume the container width is the drawing space.
-      // However, checking the CSS, --main-width is 5000px.
-      // So we can map years linearly across that width.
-
-      const width = 5000; // Matching CSS var(--main-width) roughly, or just read clientWidth
-      // Actually, best to act dynamic.
-
-      // Render function to allow potential resizing (though current CSS is fixed width)
-      function render() {
-        // Clear existing
-        while (svg.firstChild) {
-          svg.removeChild(svg.firstChild);
-        }
+        const height = (data.length + 2) * itemHeight;
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("width", "100%");
+        svg.setAttribute("height", height);
 
         const w = container.getBoundingClientRect().width || 5000;
-        const yearWidth = w / 85; // approx 1945 to 2030 spacing
 
         // Draw Decades
         for (let y = 1950; y <= 2050; y += 10) {
@@ -163,27 +186,12 @@
         }
 
         // Draw Events
-        events.forEach((event, index) => {
-          // Reverse index for y position to match original "stack up" look or standard list down?
-          // Original: y_pos = (len(events) - i - 1) * 1.2
-          // This means the FIRST item in the list (Turing) was at the TOP (highest Y value in Matplotlib is typically UP, but wait...)
-          // In Matplotlib default: (0,0) is bottom-left. 
-          // So index 0 (Turing) -> y ~ 19 * 1.2 = High Value = Top of chart?
-          // Actually usually we want chronological top to bottom or bottom to top?
-          // Let's check the png... Usually timelines read left-to-right, but the vertical stacking handles the text overlap.
-          // If the list is chronological (1950 -> 2023), placing 1950 at the "top" visually makes sense if we read down,
-          // OR placing them along the line.
-          // The python code: `y_pos = (len(events) - i - 1) * 1.2`
-          // i=0 (1950) -> y=22. i=last (2023) -> y=0.
-          // So 1950 is at the TOP, 2023 is at the BOTTOM.
-
-          const y = (index + 1) * itemHeight; // Simple top-down spacing
+        data.forEach((event, index) => {
+          const y = (index + 1) * itemHeight;
           const x = (event.year - startYear) / (endYear - startYear) * w;
-          const color = getColor(event.year);
+          const color = colorFunc ? colorFunc(event.year) : getColor(event.year);
 
-          // Connecting Line (from left 0 to the point? Or from axis?)
-          // Python: ax.axhline(y=y_pos, xmin=0.02, xmax=(year-1945)/80...)
-          // It drew a line from the left edge to the dot.
+          // Connecting Line
           const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
           line.setAttribute("x1", 20); // Small padding from left
           line.setAttribute("y1", y);
@@ -205,7 +213,6 @@
           svg.appendChild(circle);
 
           // Text
-          // Python: text at year + 0.5
           const textX = x + 15; // padding
           const textTitle = document.createElementNS("http://www.w3.org/2000/svg", "text");
           textTitle.setAttribute("x", textX);
@@ -213,7 +220,7 @@
           textTitle.setAttribute("font-size", "14");
           textTitle.setAttribute("font-weight", "bold");
           textTitle.setAttribute("fill", "#000");
-          textTitle.textContent = event.title; // + " " + event.subtitle
+          textTitle.textContent = event.title;
 
           const titleSpan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
           titleSpan.textContent = ` (${event.subtitle})`;
@@ -232,14 +239,19 @@
           textDesc.textContent = event.description;
           svg.appendChild(textDesc);
         });
+
+        container.appendChild(svg);
       }
 
-      container.appendChild(svg);
-      render(); // Run once
+      function renderAll() {
+        renderTimeline(events, 'timeline-container', getColor);
+        renderTimeline(roboticsEvents, 'robotics-timeline-container', getRoboticsColor);
+      }
 
-      // Handle window resize
+      renderAll();
+
       window.addEventListener('resize', () => {
-        render();
+        renderAll();
       });
     </script>
   </div>
