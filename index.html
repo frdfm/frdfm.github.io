@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fereydoun Farrahi Moghaddam</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      margin: 0;
+      padding: 20px;
+      background-color: #ffffff;
+      box-sizing: border-box;
+    }
+
+    #ai-timeline {
+      width: 100%;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Fereydoun Farrahi Moghaddam (frdfm)</h1>
+    <h2>Updates</h2>
+    <ul>
+      <li>My research interests span artificial intelligence and machine learning, including
+        large language models, AI agents, and agent harnesses. My current research focuses on state-based agents and
+        their harnesses. Taskless agents are one part of that research.</li>
+      <li><a href="https://github.com/frdfm/frdfm-transformers">frdfm-transformers</a>: PyTorch experiments that train
+        Transformers from scratch for translation, game control, and image generation.</li>
+      <li><a href="https://www.pseudoconscious.com/residentbench/">ResidentBench</a> is a proof-of-concept study of
+        taskless agents. It examined how ten language model configurations used tools across five simulated scenarios
+        without an assigned task (<a href="https://www.preprints.org/manuscript/202611.0441/v2">preprint</a>,
+        <a href="https://github.com/frdfm/frdfm-paper-residentbench-code">code and results</a>).
+        Supported by <a href="https://www.pseudoconscious.com/">PseudoConscious Inc.</a></li>
+    </ul>
+
+    <h2>AI Timeline</h2>
+    <div id="timeline-container"></div>
+
+    <h2>Robotics Timeline</h2>
+    <div id="robotics-timeline-container"></div>
+
+    <script>
+      const events = [
+        // Early machine intelligence and symbolic AI (1950–1969)
+        { title: "Turing’s imitation game", subtitle: "Alan Turing, 1950", description: "Proposed judging machine intelligence through a text conversation.", year: 1950 },
+        { title: "Computer chess", subtitle: "Claude Shannon, 1950", description: "Outlined how a computer could search and evaluate possible chess moves.", year: 1950 },
+        { title: "SNARC", subtitle: "Marvin Minsky and Dean Edmonds, 1951", description: "Built an early hardware neural network that learned to navigate a simulated maze.", year: 1951 },
+        { title: "Dartmouth AI workshop", subtitle: "Dartmouth College, 1956", description: "Brought researchers together under the name artificial intelligence.", year: 1956 },
+        { title: "Logic Theorist", subtitle: "Newell, Simon, and Shaw, 1956", description: "Used heuristic search to prove theorems from Principia Mathematica.", year: 1956 },
+        { title: "The perceptron", subtitle: "Frank Rosenblatt, 1958", description: "Published a model that learns to classify inputs by adjusting weights.", year: 1958 },
+        { title: "Lisp", subtitle: "John McCarthy, 1958", description: "Developed a symbolic programming language that became central to AI research.", year: 1958 },
+        { title: "Checkers and machine learning", subtitle: "Arthur Samuel, 1959", description: "Published experiments in which a checkers program improved through experience.", year: 1959 },
+        { title: "DENDRAL", subtitle: "Stanford University, 1965", description: "Used chemical knowledge and mass spectra to infer candidate molecular structures.", year: 1965 },
+        { title: "ELIZA", subtitle: "Joseph Weizenbaum, 1966", description: "Used pattern matching and scripts to simulate conversation.", year: 1966 },
+        { title: "ALPAC report", subtitle: "U.S. National Research Council, 1966", description: "Critiqued machine translation progress, preceding cuts to U.S. research funding.", year: 1966 },
+        { title: "Perceptrons", subtitle: "Minsky and Papert, 1969", description: "Analyzed what single-layer perceptrons could and could not represent.", year: 1969 },
+
+        // Expert systems, AI winters, and statistical learning (1970–1999)
+        { title: "SHRDLU", subtitle: "Terry Winograd, 1970", description: "Interpreted language commands and questions in a simulated blocks world.", year: 1970 },
+        { title: "MYCIN project", subtitle: "Stanford University, 1972", description: "Developed rules for identifying infections and recommending antibiotics.", year: 1972 },
+        { title: "Lighthill report", subtitle: "UK Science Research Council, 1973", description: "Criticized progress in AI and preceded cuts to UK research funding.", year: 1973 },
+        { title: "First AI winter", subtitle: "Research funding, 1974", description: "Government support for several major AI research programs contracted.", year: 1974 },
+        { title: "XCON", subtitle: "Digital Equipment and CMU, 1980", description: "Used rules to configure computer orders in a commercial setting.", year: 1980 },
+        { title: "Hopfield network", subtitle: "John Hopfield, 1982", description: "Showed how a recurrent network could store and retrieve patterns.", year: 1982 },
+        { title: "Fifth Generation project", subtitle: "Japan, 1982", description: "Launched a national effort in logic programming and parallel computing.", year: 1982 },
+        { title: "Backpropagation", subtitle: "Rumelhart, Hinton, and Williams, 1986", description: "Showed how backpropagated errors train multilayer networks.", year: 1986 },
+        { title: "Second AI winter", subtitle: "Lisp machines and expert systems, 1987", description: "The Lisp machine market contracted and investment in expert systems declined.", year: 1987 },
+        { title: "Support vector networks", subtitle: "Cortes and Vapnik, 1995", description: "Described a classifier that finds a wide margin between classes.", year: 1995 },
+        { title: "Deep Blue", subtitle: "IBM, 1997", description: "Defeated reigning chess champion Garry Kasparov in a six-game rematch.", year: 1997 },
+        { title: "LSTM", subtitle: "Hochreiter and Schmidhuber, 1997", description: "Introduced a gated recurrent architecture for learning long-range dependencies.", year: 1997 },
+        { title: "LeNet-5", subtitle: "LeCun et al., 1998", description: "Demonstrated convolutional networks for handwritten document recognition.", year: 1998 },
+
+        // Learning methods, data, and question answering (2000–2011)
+        { title: "Random forests", subtitle: "Leo Breiman, 2001", description: "Combined randomized decision trees into a single predictive model.", year: 2001 },
+        { title: "Deep belief networks", subtitle: "Hinton, Osindero, and Teh, 2006", description: "Trained a deep generative model one layer at a time.", year: 2006 },
+        { title: "ImageNet", subtitle: "Deng et al., 2009", description: "Published a large labeled image dataset organized around WordNet categories.", year: 2009 },
+        { title: "Watson on Jeopardy!", subtitle: "IBM, 2011", description: "A question-answering system defeated two former champions.", year: 2011 },
+
+        // Deep learning, reinforcement learning, and Transformers (2012–2019)
+        { title: "AlexNet", subtitle: "Krizhevsky et al., 2012", description: "A deep convolutional network won the ImageNet classification challenge.", year: 2012 },
+        { title: "word2vec", subtitle: "Mikolov et al., 2013", description: "Learned word vectors efficiently from large text collections.", year: 2013 },
+        { title: "Generative adversarial networks", subtitle: "Goodfellow et al., 2014", description: "Trains a generator against a discriminator that learns to spot generated data.", year: 2014 },
+        { title: "Sequence-to-sequence learning", subtitle: "Sutskever et al., 2014", description: "Used an encoder and decoder to learn mappings between sequences.", year: 2014 },
+        { title: "Deep Q-networks", subtitle: "DeepMind, 2015", description: "Learned to play Atari games from screen pixels using reinforcement learning.", year: 2015 },
+        { title: "ResNet", subtitle: "He et al., 2015", description: "Used residual connections to make very deep image networks easier to train.", year: 2015 },
+        { title: "AlphaGo", subtitle: "DeepMind, 2016", description: "Combined neural networks and tree search to defeat Lee Sedol 4–1.", year: 2016 },
+        { title: "The Transformer", subtitle: "Vaswani et al., 2017", description: "Proposed an attention-based architecture and tested it on translation.", year: 2017 },
+        { title: "AlphaZero", subtitle: "DeepMind, 2017", description: "Used self-play to learn chess, shogi, and Go from the rules.", year: 2017 },
+        { title: "BERT", subtitle: "Devlin et al., 2018", description: "Pretrained a bidirectional Transformer with masked language modeling.", year: 2018 },
+        { title: "GPT-1", subtitle: "OpenAI, 2018", description: "Pretrained a language model and fine-tuned it for downstream tasks.", year: 2018 },
+        { title: "GPT-2", subtitle: "OpenAI, 2019", description: "Demonstrated that language modeling could transfer to new tasks without fine-tuning.", year: 2019 },
+
+        // Generative models and foundation models (2020–2023)
+        { title: "GPT-3", subtitle: "Brown et al., 2020", description: "Demonstrated few-shot learning from examples supplied in the prompt.", year: 2020 },
+        { title: "Denoising diffusion models", subtitle: "Ho et al., 2020", description: "Generates images by learning to reverse a gradual noise process.", year: 2020 },
+        { title: "Retrieval-augmented generation", subtitle: "Lewis et al., 2020", description: "Combined a document retriever with a generator for knowledge-intensive tasks.", year: 2020 },
+        { title: "AlphaFold 2", subtitle: "DeepMind, 2021", description: "Predicts protein structures from amino acid sequences.", year: 2021 },
+        { title: "DALL·E", subtitle: "OpenAI, 2021", description: "Demonstrated image generation from text prompts.", year: 2021 },
+        { title: "Stable Diffusion", subtitle: "Stability AI and collaborators, 2022", description: "Public release of text-to-image diffusion model weights.", year: 2022 },
+        { title: "ChatGPT research preview", subtitle: "OpenAI, 2022", description: "Public research preview of a conversational language model.", year: 2022 },
+        { title: "InstructGPT", subtitle: "OpenAI, 2022", description: "Used human demonstrations and feedback to train models to follow instructions.", year: 2022 },
+        { title: "GPT-4", subtitle: "OpenAI, 2023", description: "Accepts image and text inputs and generates text.", year: 2023 },
+        { title: "LLaMA", subtitle: "Meta, 2023", description: "Published a family of foundation language models and released weights to researchers.", year: 2023 },
+        { title: "Segment Anything", subtitle: "Meta, 2023", description: "Released a promptable image segmentation model and a large mask dataset.", year: 2023 },
+        { title: "Llama 2", subtitle: "Meta, 2023", description: "Released model weights under a license allowing many commercial uses.", year: 2023 },
+        { title: "Gemini 1.0", subtitle: "Google DeepMind, 2023", description: "Introduced a model family trained across text, images, audio, and video.", year: 2023 },
+
+        // Multimodal systems, reasoning, and agents (2024–2026)
+        { title: "Gemini 1.5 Pro", subtitle: "Google DeepMind, 2024", description: "Introduced a million-token context window in a limited preview.", year: 2024 },
+        { title: "Sora research preview", subtitle: "OpenAI, 2024", description: "Demonstrated generating video from text prompts.", year: 2024 },
+        { title: "AlphaFold 3", subtitle: "Google DeepMind and Isomorphic Labs, 2024", description: "Predicts structures of complexes involving proteins, DNA, RNA, and ligands.", year: 2024 },
+        { title: "GPT-4o", subtitle: "OpenAI, 2024", description: "Introduced a model trained across text, vision, and audio.", year: 2024 },
+        { title: "OpenAI o1 preview", subtitle: "OpenAI, 2024", description: "Preview of models trained to spend more time reasoning before answering.", year: 2024 },
+        { title: "Claude computer use", subtitle: "Anthropic, 2024", description: "Released a beta that let Claude interact with graphical interfaces.", year: 2024 },
+        { title: "Model Context Protocol", subtitle: "Anthropic, 2024", description: "Proposed an open protocol for connecting AI applications to tools and data.", year: 2024 },
+        { title: "DeepSeek-V3", subtitle: "DeepSeek, 2024", description: "Released weights for a mixture-of-experts language model.", year: 2024 },
+        { title: "DeepSeek-R1", subtitle: "DeepSeek, 2025", description: "Released model weights and a report on reinforcement learning for reasoning.", year: 2025 },
+        { title: "AlphaEvolve", subtitle: "Google DeepMind, 2025", description: "Combines Gemini, automated evaluation, and evolutionary search.", year: 2025 },
+        { title: "Claude Code", subtitle: "Anthropic, 2025", description: "Made its terminal-based coding agent generally available.", year: 2025 },
+        { title: "GPT-5", subtitle: "OpenAI, 2025", description: "Routes between fast responses and a model that spends more time reasoning.", year: 2025 },
+        { title: "Gemini 3", subtitle: "Google DeepMind, 2025", description: "Introduced a multimodal model with reasoning and tool use.", year: 2025 },
+        { title: "Project Glasswing", subtitle: "Anthropic, 2026", description: "Selected partners gained access to Claude Mythos Preview for security work.", year: 2026 },
+        { title: "DeepSeek-V4 preview", subtitle: "DeepSeek, 2026", description: "Released Pro and Flash model previews with million-token context.", year: 2026 },
+        { title: "GPT-6 Astra", subtitle: "OpenAI, 2026", description: "Introduced a model for extended reasoning, coding, and tool use.", year: 2026 },
+        { title: "Gemini 4 Argon", subtitle: "Google, 2026", description: "Multimodal model with a million-token context window.", year: 2026 },
+        { title: "GPT-6 Cyber", subtitle: "OpenAI, 2026", description: "Cybersecurity model announced through Daybreak.", year: 2026 },
+      ];
+
+      const roboticsEvents = [
+        // Early mobile robots and programmable arms (1948–1969)
+        { title: "Cybernetic tortoises", subtitle: "W. Grey Walter, 1948", description: "Started building small mobile robots that responded to light and contact.", year: 1948 },
+        { title: "Programmable manipulator patent", subtitle: "George Devol, 1954", description: "Filed a patent for programmable handling that led to Unimate.", year: 1954 },
+        { title: "Unimate", subtitle: "General Motors, 1961", description: "Installed a programmable robot to handle hot die-cast parts.", year: 1961 },
+        { title: "Shakey project begins", subtitle: "SRI, 1966", description: "Developed a mobile robot that used perception and planning to perform tasks.", year: 1966 },
+        { title: "Stanford Arm", subtitle: "Victor Scheinman, 1969", description: "Designed an electric, computer-controlled arm for research in manipulation.", year: 1969 },
+
+        // Industrial arms, space robotics, and behavior-based control (1970–1989)
+        { title: "Lunokhod 1", subtitle: "Soviet Union, 1970", description: "Operated the first remotely driven rover on the Moon.", year: 1970 },
+        { title: "WABOT-1", subtitle: "Waseda University, 1973", description: "Combined walking, grasping, sensing, and communication in a humanoid.", year: 1973 },
+        { title: "Famulus", subtitle: "KUKA, 1973", description: "Introduced an industrial robot with six electric axes.", year: 1973 },
+        { title: "IRB 6", subtitle: "ASEA, 1974", description: "Commercialized an electric industrial arm controlled by a microprocessor.", year: 1974 },
+        { title: "PUMA", subtitle: "Unimation and Vicarm, 1978", description: "Developed a programmable arm for handling small assembly parts.", year: 1978 },
+        { title: "SCARA prototype", subtitle: "Hiroshi Makino, 1978", description: "Developed an arm with horizontal compliance suited to assembly.", year: 1978 },
+        { title: "Stanford Cart", subtitle: "Hans Moravec, 1979", description: "Used stereo vision to navigate a room around obstacles.", year: 1979 },
+        { title: "Canadarm", subtitle: "Canadian Space Agency, 1981", description: "The shuttle’s robotic arm first flew on Space Shuttle Columbia.", year: 1981 },
+        { title: "Subsumption architecture", subtitle: "Rodney Brooks, 1986", description: "Organized robot control into layers of simple behaviors.", year: 1986 },
+        { title: "Genghis", subtitle: "MIT, 1989", description: "Demonstrated six-legged walking with layered behavior control.", year: 1989 },
+
+        // Service robots, surgery, and autonomous vehicles (1990–2009)
+        { title: "Sojourner", subtitle: "NASA, 1997", description: "The Mars Pathfinder mission deployed the first rover to operate on Mars.", year: 1997 },
+        { title: "First RoboCup", subtitle: "Nagoya, Japan, 1997", description: "Launched international robot soccer competitions for AI research.", year: 1997 },
+        { title: "Global Hawk first flight", subtitle: "U.S. Air Force, 1998", description: "Tested a high-altitude, long-endurance uncrewed aircraft.", year: 1998 },
+        { title: "AIBO", subtitle: "Sony, 1999", description: "Launched a four-legged consumer robot that reacted to its surroundings.", year: 1999 },
+        { title: "ASIMO", subtitle: "Honda, 2000", description: "Introduced a bipedal humanoid designed to move through human spaces.", year: 2000 },
+        { title: "da Vinci Surgical System", subtitle: "Intuitive Surgical, 2000", description: "Received U.S. FDA clearance for general laparoscopic surgery.", year: 2000 },
+        { title: "Canadarm2", subtitle: "Canadian Space Agency, 2001", description: "Arrived at the ISS to help assemble and service the station.", year: 2001 },
+        { title: "Roomba", subtitle: "iRobot, 2002", description: "Released a home vacuum that navigates around obstacles autonomously.", year: 2002 },
+        { title: "Spirit and Opportunity", subtitle: "NASA, 2004", description: "Twin rovers landed on Mars to investigate its geological history.", year: 2004 },
+        { title: "BigDog", subtitle: "Boston Dynamics, 2004", description: "Developed a quadruped designed to carry loads over rough ground.", year: 2004 },
+        { title: "DARPA Grand Challenge", subtitle: "DARPA, 2005", description: "Five autonomous vehicles finished the desert course; Stanford’s Stanley won.", year: 2005 },
+        { title: "DARPA Urban Challenge", subtitle: "DARPA, 2007", description: "Autonomous vehicles navigated traffic, intersections, and parking tasks.", year: 2007 },
+        { title: "Dextre", subtitle: "Canadian Space Agency, 2008", description: "Arrived at the ISS to carry out maintenance with two robotic arms.", year: 2008 },
+
+        // Field robots, logistics, drones, and autonomy (2010–2020)
+        { title: "Amazon and Kiva Systems", subtitle: "Amazon, 2012", description: "Acquired the maker of mobile robots that bring shelves to warehouse workers.", year: 2012 },
+        { title: "Curiosity lands on Mars", subtitle: "NASA, 2012", description: "Used a sky crane to land a rover designed to study past habitability.", year: 2012 },
+        { title: "DJI Phantom", subtitle: "DJI, 2013", description: "Launched a ready-to-fly consumer quadcopter.", year: 2013 },
+        { title: "Hydraulic Atlas", subtitle: "Boston Dynamics and DARPA, 2013", description: "Introduced a humanoid platform for disaster-response research.", year: 2013 },
+        { title: "DARPA Robotics Challenge", subtitle: "DARPA, 2015", description: "Robots attempted disaster-response tasks, including driving and clearing debris.", year: 2015 },
+        { title: "Medical drone deliveries in Rwanda", subtitle: "Rwanda and Zipline, 2016", description: "Launched drone deliveries of blood products to health facilities.", year: 2016 },
+        { title: "ROS 2 Ardent", subtitle: "Open Robotics, 2017", description: "Released the first ROS 2 distribution, with a new communications layer.", year: 2017 },
+        { title: "Spot commercial launch", subtitle: "Boston Dynamics, 2020", description: "Began commercial sales of its quadruped for inspection and other tasks.", year: 2020 },
+        { title: "Public driverless rides", subtitle: "Waymo, 2020", description: "Opened fully driverless ride-hailing to the public in the Phoenix area.", year: 2020 },
+
+        // Space missions, learned control, and deployments (2021–2026)
+        { title: "Perseverance lands on Mars", subtitle: "NASA, 2021", description: "Began studying Jezero Crater and collecting samples for possible return.", year: 2021 },
+        { title: "Ingenuity flies on Mars", subtitle: "NASA, 2021", description: "Completed the first powered, controlled flight on another planet.", year: 2021 },
+        { title: "DART", subtitle: "NASA and Johns Hopkins APL, 2022", description: "Used autonomous guidance to hit an asteroid moon and alter its orbit.", year: 2022 },
+        { title: "RT-1", subtitle: "Google Robotics, 2022", description: "Trained a Transformer on robot demonstrations across many tasks.", year: 2022 },
+        { title: "RT-2", subtitle: "Google DeepMind, 2023", description: "Transferred knowledge from web data to robot control.", year: 2023 },
+        { title: "Chandrayaan-3", subtitle: "ISRO, 2023", description: "Deployed the Pragyan rover near the Moon’s south polar region.", year: 2023 },
+        { title: "Mobile ALOHA", subtitle: "Stanford University, 2024", description: "A mobile, two-armed robot learned tasks from operator demonstrations.", year: 2024 },
+        { title: "Electric Atlas prototype", subtitle: "Boston Dynamics, 2024", description: "Introduced an electric successor to the hydraulic Atlas.", year: 2024 },
+        { title: "Chang’e 6", subtitle: "CNSA, 2024", description: "Returned the first samples collected from the Moon’s far side.", year: 2024 },
+        { title: "Digit at GXO", subtitle: "Agility Robotics and GXO, 2024", description: "Deployed a humanoid to move totes in a commercial warehouse.", year: 2024 },
+        { title: "Gemini Robotics", subtitle: "Google DeepMind, 2025", description: "Uses images and language instructions to generate robot actions.", year: 2025 },
+        { title: "BotQ", subtitle: "Figure AI, 2025", description: "Announced a factory for manufacturing humanoid robots.", year: 2025 },
+        { title: "Vulcan", subtitle: "Amazon Robotics, 2025", description: "Introduced a warehouse robot that uses touch when handling items.", year: 2025 },
+        { title: "Figure 02 at BMW", subtitle: "Figure AI and BMW, 2025", description: "Reported a production deployment loading sheet metal parts at Spartanburg.", year: 2025 },
+        { title: "Atlas product unveiling", subtitle: "Boston Dynamics, 2026", description: "Unveiled the product version of its electric humanoid at CES.", year: 2026 },
+        { title: "Waymo’s sixth-generation Driver", subtitle: "Waymo, 2026", description: "Announced driverless operations with a new sensor and computing platform.", year: 2026 },
+        { title: "Gemini Robotics 2", subtitle: "Google DeepMind, 2026", description: "Demonstrated one model controlling multiple robot platforms.", year: 2026 },
+        { title: "Five million industrial robots", subtitle: "IFR World Robotics, 2026", description: "The IFR reported that the global stock reached five million in 2025.", year: 2026 },
+        { title: "Expanded Digit deployment", subtitle: "Agility Robotics and GXO, 2026", description: "Announced deployments at more logistics sites in the United States.", year: 2026 },
+      ];
+
+      function getColor(year) {
+        if (year < 1970) return '#2E86AB'; // Early AI - Blue
+        if (year < 1980) return '#A23B72'; // AI Winter - Purple
+        if (year < 2000) return '#F18F01'; // Expert Systems - Orange
+        if (year < 2015) return '#C73E1D'; // Deep Learning - Red
+        return '#6B2D91';                  // Modern AI - Purple
+      }
+
+      function getRoboticsColor(year) {
+        if (year < 1970) return '#2E86AB';
+        if (year < 2000) return '#A23B72';
+        if (year < 2015) return '#F18F01';
+        return '#C73E1D';
+      }
+
+      // Configuration
+      const startYear = 1945;
+      const endYear = 2055;
+      const itemHeight = 40; // Spacing between events vertically
+
+      function renderTimeline(data, containerId, colorFunc) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = ''; // Clear previous
+
+        const height = (data.length + 2) * itemHeight;
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("width", "100%");
+        svg.setAttribute("height", height);
+
+        const w = container.getBoundingClientRect().width || 5000;
+
+        // Draw Decades
+        for (let y = 1950; y <= 2050; y += 10) {
+          const x = (y - startYear) / (endYear - startYear) * w;
+
+          // Line
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", x);
+          line.setAttribute("y1", 0);
+          line.setAttribute("x2", x);
+          line.setAttribute("y2", height);
+          line.setAttribute("stroke", "lightgray");
+          line.setAttribute("stroke-width", "0.5");
+          line.setAttribute("stroke-opacity", "0.3");
+          svg.appendChild(line);
+
+          // Year Label
+          const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          text.setAttribute("x", x);
+          text.setAttribute("y", height - 5);
+          text.setAttribute("text-anchor", "middle");
+          text.setAttribute("font-size", "12");
+          text.setAttribute("fill", "#666");
+          text.textContent = y;
+          svg.appendChild(text);
+        }
+
+        // Draw Events
+        data.forEach((event, index) => {
+          const y = (index + 1) * itemHeight;
+          const x = (event.year - startYear) / (endYear - startYear) * w;
+          const color = colorFunc ? colorFunc(event.year) : getColor(event.year);
+
+          // Connecting Line
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", 20); // Small padding from left
+          line.setAttribute("y1", y);
+          line.setAttribute("x2", x);
+          line.setAttribute("y2", y);
+          line.setAttribute("stroke", "lightgray");
+          line.setAttribute("stroke-width", "1");
+          line.setAttribute("stroke-opacity", "0.5");
+          svg.appendChild(line);
+
+          // Dot
+          const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          circle.setAttribute("cx", x);
+          circle.setAttribute("cy", y);
+          circle.setAttribute("r", 6);
+          circle.setAttribute("fill", color);
+          circle.setAttribute("stroke", "black");
+          circle.setAttribute("stroke-width", "1");
+          svg.appendChild(circle);
+
+          // Text
+          const textX = x + 15; // padding
+          const textTitle = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          textTitle.setAttribute("x", textX);
+          textTitle.setAttribute("y", y - 5);
+          textTitle.setAttribute("font-size", "14");
+          textTitle.setAttribute("font-weight", "bold");
+          textTitle.setAttribute("fill", "#000");
+          textTitle.textContent = event.title;
+
+          const titleSpan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+          titleSpan.textContent = ` (${event.subtitle})`;
+          titleSpan.setAttribute("font-weight", "normal");
+          titleSpan.setAttribute("font-size", "12");
+          textTitle.appendChild(titleSpan);
+
+          svg.appendChild(textTitle);
+
+          const textDesc = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          textDesc.setAttribute("x", textX);
+          textDesc.setAttribute("y", y + 12);
+          textDesc.setAttribute("font-size", "11");
+          textDesc.setAttribute("style", "italic");
+          textDesc.setAttribute("fill", "#555");
+          textDesc.textContent = event.description;
+          svg.appendChild(textDesc);
+        });
+
+        container.appendChild(svg);
+      }
+
+      function renderAll() {
+        renderTimeline(events, 'timeline-container', getColor);
+        renderTimeline(roboticsEvents, 'robotics-timeline-container', getRoboticsColor);
+      }
+
+      renderAll();
+
+      window.addEventListener('resize', () => {
+        renderAll();
+      });
+    </script>
+  </div>
+</body>
+
+</html>
